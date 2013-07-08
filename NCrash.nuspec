@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+ <metadata>
+   <id>NCrash</id>
+   <version>{Version}</version>
+   <authors>Alik Kurdyukov</authors>
+   <owners>Alik Kurdyukov</owners>
+   <licenseUrl>https://github.com/akurdyukov/NCrash/blob/master/LICENSE-LGPLv3</licenseUrl>
+   <projectUrl>https://github.com/akurdyukov/NCrash</projectUrl>
+   <summary>Universal .NET grabal errors handler</summary>
+   <description>Simplifies handling global error and exception in .NET appication using uniform handling and dump collection.</description>
+   <copyright>Copyright 2013 Alik Kurdyukov</copyright>
+   <tags>.net exception</tags>    
+   <releaseNotes>Initial version</releaseNotes>
+ </metadata>
+</package>

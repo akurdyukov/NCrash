@@ -1,0 +1,13 @@
+﻿<Window x:Class="NCrash.Examples.WpfExample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <StackPanel>
+            <Button Margin="10" Click="Button_Click">Exception in Dispatcher thread</Button>
+            <Button Margin="10" Click="Button_Click_1">ArgumentException in Dispatcher thread</Button>
+            <Button Margin="10" Click="Button_Click_2">Exception in background thread</Button>
+            <Button Margin="10" Click="Button_Click_3">AccessViolation is Dispatcher thread</Button>
+        </StackPanel>
+    </Grid>
+</Window>
