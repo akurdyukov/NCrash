@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
 <package>
  <metadata>
-   <id>NCrash</id>
+   <id>NCrash.WPF</id>
    <version>{Version}</version>
    <authors>Alik Kurdyukov</authors>
    <owners>Alik Kurdyukov</owners>
    <licenseUrl>https://github.com/akurdyukov/NCrash/blob/master/LICENSE-LGPLv3</licenseUrl>
    <projectUrl>https://github.com/akurdyukov/NCrash</projectUrl>
-   <summary>Universal .NET grabal errors handler</summary>
-   <description>Simplifies handling global error and exception in .NET appication using uniform handling and dump collection.</description>
+   <summary>WPF dialogs for NCrash</summary>
+   <description>Ready WPF dialogs for NCrash - the univerval .NET global error handler</description>
    <copyright>Copyright 2013 Alik Kurdyukov</copyright>
-   <tags>.net exception</tags>    
+   <tags>.net exception wpf</tags>
    <releaseNotes>Initial version</releaseNotes>
    <dependencies>
-      <dependency id="Common.Logging" version="2.1.2" />
+      <dependency id="NCrash" version="{Version}" />
+      <dependency id="Ookii.Dialogs" version="1.0" />
    </dependencies>
  </metadata>
 </package>
