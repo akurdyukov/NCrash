@@ -74,5 +74,12 @@ namespace NCrash
         /// Sender to use for sending reports to
         /// </summary>
         ISender Sender { get; }
+        
+        //mycode
+        ///<summary>
+        ///Include application screenshots in report
+        /// </summary>
+        bool IncludeScreenshots { get; }
+        //mycode
     }
 }

@@ -15,7 +15,13 @@ namespace NCrash.Examples.WinFormsExample
             // set NCrash handlers
             var userInterface = new NormalWinFormsUserInterface();
             var settings = new DefaultSettings { UserInterface = userInterface };
+            //mycode
+            settings.Sender = new localsender();
+            settings.IncludeScreenshots = true;
             var reporter = new ErrorReporter(settings);
+            reporter.HandleExceptions = true;
+            //System.IO.IsolatedStorage.IsolatedStorageFile.Remove(System.IO.IsolatedStorage.IsolatedStorageScope.User);
+            //mycode
 
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;
             Application.ThreadException += reporter.ThreadException;

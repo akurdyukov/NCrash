@@ -10,7 +10,13 @@ namespace NCrash.Examples.ConsoleExample
         {
             var userInterface = new EmptyUserInterface {Flow = ExecutionFlow.BreakExecution};
             var settings = new DefaultSettings {HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface};
+            //mycode
+            settings.Sender = new localsender();
+            settings.IncludeScreenshots = true;
             var reporter = new ErrorReporter(settings);
+            reporter.HandleExceptions = true;
+            //System.IO.IsolatedStorage.IsolatedStorageFile.Remove(System.IO.IsolatedStorage.IsolatedStorageScope.User);
+            //mycode
 
             // Sample NCrash configuration for console applications
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;

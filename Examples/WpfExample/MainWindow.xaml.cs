@@ -16,7 +16,13 @@ namespace NCrash.Examples.WpfExample
 
             var userInterface = new NormalWpfUserInterface();
             var settings = new DefaultSettings { HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface };
+            //mycode
+            settings.Sender = new localsender();
+            settings.IncludeScreenshots = true;
             var reporter = new ErrorReporter(settings);
+            reporter.HandleExceptions = true;
+            //System.IO.IsolatedStorage.IsolatedStorageFile.Remove(System.IO.IsolatedStorage.IsolatedStorageScope.User);
+            //mycode
 
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;
             TaskScheduler.UnobservedTaskException += reporter.UnobservedTaskException;
