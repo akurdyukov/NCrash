@@ -10,7 +10,7 @@ using NCrash.Core;
 using NCrash.Core.Util;
 using NCrash.Storage;
 using NCrash.UI;
-using NCrash.Core.ScreenShots;
+using NCrash.Plugins;
 
 namespace NCrash
 {
@@ -268,8 +268,15 @@ namespace NCrash
                 Logger.Trace("Starting to generate a bug report for the exception.");
                 var serializableException = new SerializableException(exception);
                 var report = new Report(serializableException);
-                //Generating screenshots, adding list of result files to report.
-                report.ScreenshotList = ScreenShotWriter.Write(string.Empty);
+
+                if (_settings.Plugins != null && _settings.Plugins.Count > 0)
+                {
+                    Logger.Trace("Processing plugins.");
+                    foreach (IPlugin plugin in _settings.Plugins)
+                    {
+                        plugin.PreProcess(_settings);
+                    }
+                }
 
                 var handler = ProcessingException;
                 if (handler != null)
@@ -307,8 +314,14 @@ namespace NCrash
 
                 }
 
-                //Deleting screenshot files
-                ScreenShotWriter.Clear(report.ScreenshotList);
+                if (_settings.Plugins != null && _settings.Plugins.Count > 0)
+                {
+                    Logger.Trace("PostProcessing plugins.");
+                    foreach (IPlugin plugin in _settings.Plugins)
+                    {
+                        plugin.PostProcess(_settings);
+                    }
+                }
 
                 return uiDialogResult.Execution;
             }

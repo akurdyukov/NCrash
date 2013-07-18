@@ -53,7 +53,8 @@
     <Compile Include="Core\MiniDump\DumpWriter.cs" />
     <Compile Include="Core\MiniDump\MiniDumpType.cs" />
     <Compile Include="Core\Report.cs" />
-    <Compile Include="Core\ScreenShots\ScreenShotWriter.cs" />
+    <Compile Include="Plugins\IPlugin.cs" />
+    <Compile Include="Plugins\ScreenShotWriter.cs" />
     <Compile Include="Core\SerializableDictionary.cs" />
     <Compile Include="Core\SerializableException.cs" />
     <Compile Include="Core\Util\AssemblyTools.cs" />

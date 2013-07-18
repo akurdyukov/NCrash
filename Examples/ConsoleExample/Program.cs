@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using NCrash.UI;
 using System.IO;
 using System.Collections.Generic;
+using NCrash.Plugins;
 
 namespace NCrash.Examples.ConsoleExample
 {
@@ -13,18 +14,10 @@ namespace NCrash.Examples.ConsoleExample
             var userInterface = new EmptyUserInterface {Flow = ExecutionFlow.BreakExecution};
             var settings = new DefaultSettings {HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface};
             settings.Sender = new LocalSender();
+            //Adding screenshot plugin
+            settings.Plugins.Add(new ScreenShotWriter());
             var reporter = new ErrorReporter(settings);
             reporter.HandleExceptions = true;
-            /// Example how to add screenshots, or other files to report
-            reporter.ProcessingException += (ex, report) =>
-            {
-                if (settings.AdditionalReportFiles == null)
-                    settings.AdditionalReportFiles = new List<string>();
-                foreach (Tuple<string, string> screenshot in report.ScreenshotList)
-                {
-                    settings.AdditionalReportFiles.Add(Path.Combine(screenshot.Item1, screenshot.Item2));
-                }
-            };
 
             // Sample NCrash configuration for console applications
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;

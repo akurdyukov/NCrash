@@ -3,6 +3,7 @@ using NCrash.Core.MiniDump;
 using NCrash.Sender;
 using NCrash.Storage;
 using NCrash.UI;
+using NCrash.Plugins;
 
 namespace NCrash
 {
@@ -37,7 +38,7 @@ namespace NCrash
         /// Gets or sets a list of additional files to be added to the report zip. The files can use * or ? in the same way as DOS modifiers.
         /// Paths should be absolute i.e. start with disk name.
         /// </summary>
-        IList<string> AdditionalReportFiles { get; }
+        IList<string> AdditionalReportFiles { get; set; }
 
         /// <summary>
         /// Gets or sets the memory dump type. Memory dumps are quite useful for replicating the exact conditions that the application crashed (i.e.
@@ -74,5 +75,10 @@ namespace NCrash
         /// Sender to use for sending reports to
         /// </summary>
         ISender Sender { get; }
+
+        /// <summary>
+        /// List of plugins
+        /// </summary>
+        IList<IPlugin> Plugins { get; }
     }
 }

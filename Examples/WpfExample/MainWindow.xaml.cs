@@ -4,6 +4,7 @@ using System.Windows;
 using NCrash.WPF;
 using System.IO;
 using System.Collections.Generic;
+using NCrash.Plugins;
 
 namespace NCrash.Examples.WpfExample
 {
@@ -19,21 +20,11 @@ namespace NCrash.Examples.WpfExample
             var userInterface = new NormalWpfUserInterface();
             var settings = new DefaultSettings { HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface };
             settings.Sender = new LocalSender();
+            //Adding screenshot plugin
+            settings.Plugins.Add(new ScreenShotWriter());
             var reporter = new ErrorReporter(settings);
             reporter.HandleExceptions = true;
-            
-            /// Example how to add screenshots, or other files to report
-            reporter.ProcessingException += (ex, report) =>
-            {
-                if (settings.AdditionalReportFiles == null)
-                    settings.AdditionalReportFiles = new List<string>();
-                foreach (Tuple<string, string> screenshot in report.ScreenshotList)
-                {
-                    settings.AdditionalReportFiles.Add(Path.Combine(screenshot.Item1, screenshot.Item2));
-                }
-            };
-
-
+           
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;
             TaskScheduler.UnobservedTaskException += reporter.UnobservedTaskException;
             Application.Current.DispatcherUnhandledException += reporter.DispatcherUnhandledException;

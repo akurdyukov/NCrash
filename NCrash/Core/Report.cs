@@ -41,11 +41,5 @@ namespace NCrash.Core
         {
             return string.Format("{{CustomInfo: {0}, GeneralInfo: {1}, Exception: {2}}}", CustomInfo, GeneralInfo, Exception);
         }
-
-        /// <summary>
-        /// Unserialized property. List of screenshot files. Path,file.
-        /// </summary>
-        [XmlIgnoreAttribute]
-        public IList<Tuple<string, string>> ScreenshotList{get;set;}
     }
 }
