@@ -18,10 +18,11 @@ namespace NCrash.Examples.WpfExample
 
             var userInterface = new NormalWpfUserInterface();
             var settings = new DefaultSettings { HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface };
-            //mycode
             settings.Sender = new LocalSender();
             var reporter = new ErrorReporter(settings);
             reporter.HandleExceptions = true;
+            
+            /// Example how to add screenshots, or other files to report
             reporter.ProcessingException += (ex, report) =>
             {
                 if (settings.AdditionalReportFiles == null)
@@ -31,7 +32,7 @@ namespace NCrash.Examples.WpfExample
                     settings.AdditionalReportFiles.Add(Path.Combine(screenshot.Item1, screenshot.Item2));
                 }
             };
-            //mycode
+
 
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;
             TaskScheduler.UnobservedTaskException += reporter.UnobservedTaskException;

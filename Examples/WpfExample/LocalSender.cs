@@ -8,6 +8,9 @@ using NCrash.Sender;
 
 namespace NCrash.Examples.WpfExample
 {
+    /// <summary>
+    /// Simple local sender. Write report files in local directory
+    /// </summary>
     class LocalSender : ISender
     {
         FileStream filew;

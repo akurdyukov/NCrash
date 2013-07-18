@@ -1,5 +1,4 @@
-﻿//mycode
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +8,9 @@ using NCrash.Sender;
 
 namespace NCrash.Examples.WinFormsExample
 {
+    /// <summary>
+    /// Simple local sender. Write report files in local directory
+    /// </summary>
     class LocalSender : ISender
     {
         FileStream filew;
@@ -28,4 +30,3 @@ namespace NCrash.Examples.WinFormsExample
 
     }
 }
-//mycode

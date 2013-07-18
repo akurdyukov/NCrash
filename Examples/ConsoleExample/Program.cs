@@ -12,10 +12,10 @@ namespace NCrash.Examples.ConsoleExample
         {
             var userInterface = new EmptyUserInterface {Flow = ExecutionFlow.BreakExecution};
             var settings = new DefaultSettings {HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface};
-            //mycode
             settings.Sender = new LocalSender();
             var reporter = new ErrorReporter(settings);
             reporter.HandleExceptions = true;
+            /// Example how to add screenshots, or other files to report
             reporter.ProcessingException += (ex, report) =>
             {
                 if (settings.AdditionalReportFiles == null)
@@ -25,7 +25,6 @@ namespace NCrash.Examples.ConsoleExample
                     settings.AdditionalReportFiles.Add(Path.Combine(screenshot.Item1, screenshot.Item2));
                 }
             };
-            //mycode
 
             // Sample NCrash configuration for console applications
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;

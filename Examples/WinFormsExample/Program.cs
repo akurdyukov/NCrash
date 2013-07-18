@@ -17,10 +17,11 @@ namespace NCrash.Examples.WinFormsExample
             // set NCrash handlers
             var userInterface = new NormalWinFormsUserInterface();
             var settings = new DefaultSettings { UserInterface = userInterface };
-            //mycode
             settings.Sender = new LocalSender();
             var reporter = new ErrorReporter(settings);
             reporter.HandleExceptions = true;
+
+            /// Example how to add screenshots, or other files to report
             reporter.ProcessingException += (ex,report) =>
              {
                  if(settings.AdditionalReportFiles == null)
@@ -30,7 +31,6 @@ namespace NCrash.Examples.WinFormsExample
                      settings.AdditionalReportFiles.Add(Path.Combine(screenshot.Item1, screenshot.Item2));
                  }
              };
-            //mycode
 
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;
             Application.ThreadException += reporter.ThreadException;

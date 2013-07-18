@@ -1,5 +1,4 @@
-﻿//mycode
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +10,13 @@ using Common.Logging;
 
 namespace NCrash.Core.ScreenShots
 {
-    
+    /// <summary>
+    /// Generationg screenshots fo current application.
+    /// Returns list of files. Pair Path,File.
+    /// <code>
+    /// IList<Tuple<string,string>> _screenlist = ScreenShotWriter.Write("Path here"); 
+    /// </code>
+    /// </summary>
     internal static class ScreenShotWriter
     {
         public delegate bool WindowEnumCallback(int hwnd, int lparam);
@@ -45,6 +50,10 @@ namespace NCrash.Core.ScreenShots
         private static string _screenshotName;
         private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Generating windows handle list
+        /// </summary>
+
         internal static bool AddWnd(int hwnd, int lparam)
         {
             Process currentProcess = Process.GetCurrentProcess();
@@ -55,6 +64,10 @@ namespace NCrash.Core.ScreenShots
                 _windows.Add(hwnd);
             return true;
         }
+        ///<summary>
+        ///Geneating screenshots
+        /// </summary>
+
         internal static IList<Tuple<string,string>> Write(string _path)
         {
             if (_path == string.Empty)
@@ -81,6 +94,10 @@ namespace NCrash.Core.ScreenShots
             return _screenshotNames;
         }
 
+        /// <summary>
+        /// Capturing window area at the screen
+        /// </summary>
+
         internal static Bitmap Capture(int hwnd)
         {
             var rect = new Rect();
@@ -97,6 +114,10 @@ namespace NCrash.Core.ScreenShots
             return result;
         }
 
+        /// <summary>
+        /// Deleting the list of screenshots
+        /// </summary>
+
         internal static bool Clear(IList<Tuple<string,string>> screenshotList)
         {
             foreach (Tuple<string, string> screenshot in screenshotList)
@@ -107,4 +128,3 @@ namespace NCrash.Core.ScreenShots
         }
     }
 }
-//mycode

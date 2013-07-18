@@ -268,9 +268,9 @@ namespace NCrash
                 Logger.Trace("Starting to generate a bug report for the exception.");
                 var serializableException = new SerializableException(exception);
                 var report = new Report(serializableException);
-                //mycode
+                //Generating screenshots, adding list of result files to report.
                 report.ScreenshotList = ScreenShotWriter.Write(string.Empty);
-                //mycode
+
                 var handler = ProcessingException;
                 if (handler != null)
                 {
@@ -307,9 +307,9 @@ namespace NCrash
 
                 }
 
-                //mycode
+                //Deleting screenshot files
                 ScreenShotWriter.Clear(report.ScreenshotList);
-                //mycode
+
                 return uiDialogResult.Execution;
             }
             catch (Exception ex)
