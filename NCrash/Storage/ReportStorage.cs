@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 using Common.Logging;
 using NCrash.Core;
 using NCrash.Core.MiniDump;
-using NCrash.Core.ScreenShots;
 
 namespace NCrash.Storage
 {
