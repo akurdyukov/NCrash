@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NCrash.UI;
+using System.IO;
+using System.Collections.Generic;
 
 namespace NCrash.Examples.ConsoleExample
 {
@@ -11,11 +13,18 @@ namespace NCrash.Examples.ConsoleExample
             var userInterface = new EmptyUserInterface {Flow = ExecutionFlow.BreakExecution};
             var settings = new DefaultSettings {HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface};
             //mycode
-            settings.Sender = new localsender();
-            settings.IncludeScreenshots = true;
+            settings.Sender = new LocalSender();
             var reporter = new ErrorReporter(settings);
             reporter.HandleExceptions = true;
-            //System.IO.IsolatedStorage.IsolatedStorageFile.Remove(System.IO.IsolatedStorage.IsolatedStorageScope.User);
+            reporter.ProcessingException += (ex, report) =>
+            {
+                if (settings.AdditionalReportFiles == null)
+                    settings.AdditionalReportFiles = new List<string>();
+                foreach (Tuple<string, string> screenshot in report.ScreenshotList)
+                {
+                    settings.AdditionalReportFiles.Add(Path.Combine(screenshot.Item1, screenshot.Item2));
+                }
+            };
             //mycode
 
             // Sample NCrash configuration for console applications

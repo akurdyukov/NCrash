@@ -10,6 +10,7 @@ using NCrash.Core;
 using NCrash.Core.Util;
 using NCrash.Storage;
 using NCrash.UI;
+using NCrash.Core.ScreenShots;
 
 namespace NCrash
 {
@@ -267,7 +268,9 @@ namespace NCrash
                 Logger.Trace("Starting to generate a bug report for the exception.");
                 var serializableException = new SerializableException(exception);
                 var report = new Report(serializableException);
-
+                //mycode
+                report.ScreenshotList = ScreenShotWriter.Write(string.Empty);
+                //mycode
                 var handler = ProcessingException;
                 if (handler != null)
                 {
@@ -304,6 +307,9 @@ namespace NCrash
 
                 }
 
+                //mycode
+                ScreenShotWriter.Clear(report.ScreenshotList);
+                //mycode
                 return uiDialogResult.Execution;
             }
             catch (Exception ex)

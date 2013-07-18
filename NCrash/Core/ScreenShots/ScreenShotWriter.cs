@@ -6,8 +6,8 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using NCrash.Storage;
 using System.Drawing;
+using Common.Logging;
 
 namespace NCrash.Core.ScreenShots
 {
@@ -38,11 +38,12 @@ namespace NCrash.Core.ScreenShots
             public int Bottom;
         }
 
-        private static List<int> Windows = new List<int>();
-        private static List<string> screenshotNames = new List<string>();
-        private static int screenshotNum;
-        private static Bitmap screenshot;
-        private static string screenshotName;
+        private static IList<int> _windows = new List<int>();
+        private static IList<Tuple<string,string>> _screenshotNames = new List<Tuple<string,string>>();
+        private static int _screenshotNum;
+        private static Bitmap _screenshot;
+        private static string _screenshotName;
+        private static readonly ILog Logger = LogManager.GetCurrentClassLogger();
 
         internal static bool AddWnd(int hwnd, int lparam)
         {
@@ -51,31 +52,33 @@ namespace NCrash.Core.ScreenShots
             uint windowProcessId = new uint();
             GetWindowThreadProcessId(hwnd, out windowProcessId);
             if (currentProcessId == windowProcessId && IsWindowVisible(hwnd))
-                Windows.Add(hwnd);
+                _windows.Add(hwnd);
             return true;
         }
-        internal static List<string> Write()
+        internal static IList<Tuple<string,string>> Write(string _path)
         {
+            if (_path == string.Empty)
+                _path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             try
             {
                 EnumWindows(new WindowEnumCallback(AddWnd), 0);
-                screenshotNum = 1;
-                screenshotNames.Clear();
-                foreach (int hwnd in Windows)
+                _screenshotNum = 1;
+                _screenshotNames.Clear();
+                foreach (int hwnd in _windows)
                 {
 
-                    screenshot = Capture(hwnd);
-                    screenshotName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                                                    "Application_screenshot_" + screenshotNum.ToString() + ".jpg"); ;
-                    screenshot.Save(screenshotName);
-                    screenshotNum++;
-                    screenshotNames.Add(screenshotName);
+                    _screenshot = Capture(hwnd);
+                    _screenshotName = Path.Combine(_path,"Application_screenshot_" + _screenshotNum.ToString() + ".jpg");
+                    _screenshot.Save(_screenshotName);
+                    _screenshotNames.Add(new Tuple<string,string>(_path,"Application_screenshot_" + _screenshotNum.ToString() + ".jpg"));
+                    _screenshotNum++;
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                Logger.Error("An exception occurred during screenshot generation.", ex);
             }
-            return screenshotNames;
+            return _screenshotNames;
         }
 
         internal static Bitmap Capture(int hwnd)
@@ -92,6 +95,15 @@ namespace NCrash.Core.ScreenShots
             }
 
             return result;
+        }
+
+        internal static bool Clear(IList<Tuple<string,string>> screenshotList)
+        {
+            foreach (Tuple<string, string> screenshot in screenshotList)
+            {
+                File.Delete(Path.Combine(screenshot.Item1,screenshot.Item2));
+            }
+            return true;
         }
     }
 }

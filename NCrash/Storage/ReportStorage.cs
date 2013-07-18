@@ -55,22 +55,6 @@ namespace NCrash.Storage
                         {
                             AddAdditionalFiles(zipStorer);
                         }
-                        
-                        //mycode
-                        // Include application screenshots (if configured so)
-                        if (_settings.IncludeScreenshots)
-                        {
-                            int i = 1;
-                            System.Collections.Generic.List<string> names =  ScreenShotWriter.Write();
-                            foreach (string name in names)
-                            {
-                                zipStorer.AddFile(ZipStorer.Compression.Deflate, name,
-                                      "Application_screenshot_" + i.ToString() + ".jpg", string.Empty);
-                                File.Delete(name);
-                                i++;
-                            }
-                        }
-                        //mycode
                     }
 
                     Logger.Trace("Created a new report file. Currently the number of report files queued to be send is: " +

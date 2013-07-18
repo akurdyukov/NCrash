@@ -21,9 +21,6 @@ namespace NCrash
             UseBackgroundSender = true;
             SendTimeout = 0;
             Sender = new NoOpSender();
-            //mycode
-            IncludeScreenshots = false;
-            //mycode
         }
 
         public bool HandleProcessCorruptedStateExceptions { get; set; }
@@ -36,8 +33,5 @@ namespace NCrash
         public bool UseBackgroundSender { get; set; }
         public int SendTimeout { get; set; }
         public ISender Sender { get; set; }
-        //mycode
-        public bool IncludeScreenshots { get; set; }
-        //mycode
     }
 }

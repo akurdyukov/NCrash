@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using NCrash.WinForms;
+using System.IO;
+using System.Collections.Generic;
 
 namespace NCrash.Examples.WinFormsExample
 {
@@ -16,11 +18,18 @@ namespace NCrash.Examples.WinFormsExample
             var userInterface = new NormalWinFormsUserInterface();
             var settings = new DefaultSettings { UserInterface = userInterface };
             //mycode
-            settings.Sender = new localsender();
-            settings.IncludeScreenshots = true;
+            settings.Sender = new LocalSender();
             var reporter = new ErrorReporter(settings);
             reporter.HandleExceptions = true;
-            //System.IO.IsolatedStorage.IsolatedStorageFile.Remove(System.IO.IsolatedStorage.IsolatedStorageScope.User);
+            reporter.ProcessingException += (ex,report) =>
+             {
+                 if(settings.AdditionalReportFiles == null)
+                 settings.AdditionalReportFiles = new List<string>();
+                 foreach (Tuple<string, string> screenshot in report.ScreenshotList)
+                 {
+                     settings.AdditionalReportFiles.Add(Path.Combine(screenshot.Item1, screenshot.Item2));
+                 }
+             };
             //mycode
 
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;

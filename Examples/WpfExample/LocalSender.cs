@@ -8,19 +8,20 @@ using NCrash.Sender;
 
 namespace NCrash.Examples.WpfExample
 {
-    class localsender : ISender
+    class LocalSender : ISender
     {
         FileStream filew;
         byte[] output;
         public bool Send(Stream data, string fileName, Report report)
         {
 
-            filew = new FileStream(fileName, FileMode.Create);
-            output = new byte[data.Length];
-            data.Read(output, 0, output.Length);
-            filew.Write(output, 0, output.Length);
-            filew.Close();
-
+            using (filew = new FileStream(fileName, FileMode.Create))
+            {
+                output = new byte[data.Length];
+                data.Read(output, 0, output.Length);
+                filew.Write(output, 0, output.Length);
+                filew.Close();
+            }
             return true;
         }
 

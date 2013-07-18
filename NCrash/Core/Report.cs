@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace NCrash.Core
 {
@@ -39,5 +41,8 @@ namespace NCrash.Core
         {
             return string.Format("{{CustomInfo: {0}, GeneralInfo: {1}, Exception: {2}}}", CustomInfo, GeneralInfo, Exception);
         }
+
+        [XmlIgnoreAttribute]
+        public IList<Tuple<string, string>> ScreenshotList{get;set;}
     }
 }
