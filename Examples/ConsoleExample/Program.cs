@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NCrash.UI;
+using System.IO;
+using System.Collections.Generic;
+using NCrash.Plugins;
 
 namespace NCrash.Examples.ConsoleExample
 {
@@ -10,7 +13,11 @@ namespace NCrash.Examples.ConsoleExample
         {
             var userInterface = new EmptyUserInterface {Flow = ExecutionFlow.BreakExecution};
             var settings = new DefaultSettings {HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface};
+            settings.Sender = new LocalSender();
+            //Adding screenshot plugin
+            settings.Plugins.Add(new ScreenShotWriter());
             var reporter = new ErrorReporter(settings);
+            reporter.HandleExceptions = true;
 
             // Sample NCrash configuration for console applications
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;

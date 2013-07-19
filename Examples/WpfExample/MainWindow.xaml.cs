@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using System.Windows;
 using NCrash.WPF;
+using System.IO;
+using System.Collections.Generic;
+using NCrash.Plugins;
 
 namespace NCrash.Examples.WpfExample
 {
@@ -16,8 +19,12 @@ namespace NCrash.Examples.WpfExample
 
             var userInterface = new NormalWpfUserInterface();
             var settings = new DefaultSettings { HandleProcessCorruptedStateExceptions = true, UserInterface = userInterface };
+            settings.Sender = new LocalSender();
+            //Adding screenshot plugin
+            settings.Plugins.Add(new ScreenShotWriter());
             var reporter = new ErrorReporter(settings);
-
+            reporter.HandleExceptions = true;
+           
             AppDomain.CurrentDomain.UnhandledException += reporter.UnhandledException;
             TaskScheduler.UnobservedTaskException += reporter.UnobservedTaskException;
             Application.Current.DispatcherUnhandledException += reporter.DispatcherUnhandledException;

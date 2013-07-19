@@ -10,6 +10,7 @@ using NCrash.Core;
 using NCrash.Core.Util;
 using NCrash.Storage;
 using NCrash.UI;
+using NCrash.Plugins;
 
 namespace NCrash
 {
@@ -268,6 +269,15 @@ namespace NCrash
                 var serializableException = new SerializableException(exception);
                 var report = new Report(serializableException);
 
+                if (_settings.Plugins != null && _settings.Plugins.Count > 0)
+                {
+                    Logger.Trace("Processing plugins.");
+                    foreach (IPlugin plugin in _settings.Plugins)
+                    {
+                        plugin.PreProcess(_settings);
+                    }
+                }
+
                 var handler = ProcessingException;
                 if (handler != null)
                 {
@@ -302,6 +312,15 @@ namespace NCrash
                         }
                     }
 
+                }
+
+                if (_settings.Plugins != null && _settings.Plugins.Count > 0)
+                {
+                    Logger.Trace("PostProcessing plugins.");
+                    foreach (IPlugin plugin in _settings.Plugins)
+                    {
+                        plugin.PostProcess(_settings);
+                    }
                 }
 
                 return uiDialogResult.Execution;

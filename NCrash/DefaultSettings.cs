@@ -3,6 +3,7 @@ using NCrash.Core.MiniDump;
 using NCrash.Sender;
 using NCrash.Storage;
 using NCrash.UI;
+using NCrash.Plugins;
 
 namespace NCrash
 {
@@ -21,6 +22,8 @@ namespace NCrash
             UseBackgroundSender = true;
             SendTimeout = 0;
             Sender = new NoOpSender();
+            Plugins = new List<IPlugin>();
+            AdditionalReportFiles = new List<string>();
         }
 
         public bool HandleProcessCorruptedStateExceptions { get; set; }
@@ -33,5 +36,6 @@ namespace NCrash
         public bool UseBackgroundSender { get; set; }
         public int SendTimeout { get; set; }
         public ISender Sender { get; set; }
+        public IList<IPlugin> Plugins { get; set; }
     }
 }
