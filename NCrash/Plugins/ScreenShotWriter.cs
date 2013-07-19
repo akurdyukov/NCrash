@@ -102,13 +102,15 @@ namespace NCrash.Plugins
 
         public void PreProcess(ISettings settings)
         {
+            if (settings.AdditionalReportFiles == null)
+                throw new ArgumentException("AdditionalReportFiles cannot be null");
+
             try
             {
                 EnumWindows(new WindowEnumCallback(AddWnd), 0);
                 _screenshotNum = 1;
                 _screenshotNames.Clear();
-                if(settings.AdditionalReportFiles == null)
-                    settings.AdditionalReportFiles = new List<string>();
+                
                 foreach (int hwnd in _windows)
                 {
 

@@ -38,7 +38,7 @@ namespace NCrash
         /// Gets or sets a list of additional files to be added to the report zip. The files can use * or ? in the same way as DOS modifiers.
         /// Paths should be absolute i.e. start with disk name.
         /// </summary>
-        IList<string> AdditionalReportFiles { get; set; }
+        IList<string> AdditionalReportFiles { get; }
 
         /// <summary>
         /// Gets or sets the memory dump type. Memory dumps are quite useful for replicating the exact conditions that the application crashed (i.e.

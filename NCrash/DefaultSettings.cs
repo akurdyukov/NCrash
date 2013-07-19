@@ -23,6 +23,7 @@ namespace NCrash
             SendTimeout = 0;
             Sender = new NoOpSender();
             Plugins = new List<IPlugin>();
+            AdditionalReportFiles = new List<string>();
         }
 
         public bool HandleProcessCorruptedStateExceptions { get; set; }
