@@ -3,6 +3,7 @@ using NCrash.Core.MiniDump;
 using NCrash.Sender;
 using NCrash.Storage;
 using NCrash.UI;
+using NCrash.Plugins;
 
 namespace NCrash
 {
@@ -74,5 +75,10 @@ namespace NCrash
         /// Sender to use for sending reports to
         /// </summary>
         ISender Sender { get; }
+
+        /// <summary>
+        /// List of plugins
+        /// </summary>
+        IList<IPlugin> Plugins { get; }
     }
 }
