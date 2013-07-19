@@ -14,24 +14,9 @@ namespace NCrash.Plugins
     /// Generationg screenshots for current application plugin.
     /// Add files to AdditionalFiles list
     /// </summary>
+    
     public class ScreenShotWriter:IPlugin
     {
-
-        public ScreenShotWriter()
-        {
-            _path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-        }
-        
-        public ScreenShotWriter(string path)
-        {
-            if (path == string.Empty)
-                _path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            else
-                _path = path;
-        }
-
-        public delegate bool WindowEnumCallback(int hwnd, int lparam);
-
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool EnumWindows(WindowEnumCallback lpEnumFunc, int lParam);
@@ -61,13 +46,26 @@ namespace NCrash.Plugins
         private string _screenshotName;
         private readonly ILog Logger = LogManager.GetCurrentClassLogger();
         private string _path;
+        private delegate bool WindowEnumCallback(int hwnd, int lparam);
 
-        
+        public ScreenShotWriter()
+        {
+            _path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+        }
+
+        public ScreenShotWriter(string path)
+        {
+            if (path == string.Empty)
+                _path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            else
+                _path = path;
+        }
+
         /// <summary>
         /// Generating windows handle list
         /// </summary>
 
-        internal bool AddWnd(int hwnd, int lparam)
+        private bool AddWnd(int hwnd, int lparam)
         {
             Process currentProcess = Process.GetCurrentProcess();
             uint currentProcessId = (uint)currentProcess.Id;
@@ -77,6 +75,27 @@ namespace NCrash.Plugins
                 _windows.Add(hwnd);
             return true;
         }
+
+        /// <summary>
+        /// Capturing window area at the screen
+        /// </summary>
+
+        private Bitmap Capture(int hwnd)
+        {
+            var rect = new Rect();
+            GetWindowRect(hwnd, ref rect);
+            Rectangle bounds = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
+
+            var result = new Bitmap(bounds.Width, bounds.Height);
+
+            using (var g = Graphics.FromImage(result))
+            {
+                g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
+            }
+
+            return result;
+        }
+
         ///<summary>
         ///Geneating screenshots
         /// </summary>
@@ -106,27 +125,7 @@ namespace NCrash.Plugins
                 Logger.Error("An exception occurred during screenshot generation.", ex);
             }
         }
-
-        /// <summary>
-        /// Capturing window area at the screen
-        /// </summary>
-
-        internal Bitmap Capture(int hwnd)
-        {
-            var rect = new Rect();
-            GetWindowRect(hwnd, ref rect);
-            Rectangle bounds = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
-            
-            var result = new Bitmap(bounds.Width, bounds.Height);
-
-            using (var g = Graphics.FromImage(result))
-            {
-                g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
-            }
-
-            return result;
-        }
-
+                
         /// <summary>
         /// Deleting the list of screenshots
         /// </summary>
